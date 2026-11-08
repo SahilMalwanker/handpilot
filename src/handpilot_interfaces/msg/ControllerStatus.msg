@@ -1,0 +1,14 @@
+uint8 DISENGAGED=0
+uint8 ENGAGED=1
+uint8 HOLD=2
+uint8 FAULT=3
+std_msgs/Header header
+uint8 state
+string reason
+float64[2] requested_position
+float64[2] achieved_position
+float64[2] joints
+bool limited
+bool rejected
+bool command_age_valid
+float64 command_age
