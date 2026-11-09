@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>handpilot_control</name>
+  <version>0.1.0</version>
+  <description>ROS adapter for the authoritative simulated joint controller.</description>
+  <maintainer email="maintainer@example.com">HandPilot contributors</maintainer>
+  <license>TODO</license>
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <depend>rclcpp</depend>
+  <depend>rcl_interfaces</depend>
+  <depend>handpilot_core</depend>
+  <depend>handpilot_interfaces</depend>
+  <depend>sensor_msgs</depend>
+  <depend>std_srvs</depend>
+  <test_depend>launch_testing_ament_cmake</test_depend>
+  <test_depend>launch_testing</test_depend>
+  <test_depend>launch_ros</test_depend>
+  <test_depend>launch</test_depend>
+  <test_depend>rclpy</test_depend>
+  <test_depend>python3-pytest</test_depend>
+  <export><build_type>ament_cmake</build_type></export>
+</package>
