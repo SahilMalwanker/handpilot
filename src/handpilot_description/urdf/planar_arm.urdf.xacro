@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="handpilot_planar_arm">
+  <xacro:arg name="link1_length" default="0.30"/>
+  <xacro:arg name="link2_length" default="0.25"/>
+  <xacro:arg name="shoulder_min" default="-2.8"/>
+  <xacro:arg name="shoulder_max" default="2.8"/>
+  <xacro:arg name="elbow_min" default="-2.8"/>
+  <xacro:arg name="elbow_max" default="2.8"/>
+  <xacro:arg name="shoulder_max_speed" default="0.8"/>
+  <xacro:arg name="elbow_max_speed" default="0.8"/>
+  <xacro:property name="length1" value="$(arg link1_length)"/>
+  <xacro:property name="length2" value="$(arg link2_length)"/>
+  <material name="teal"><color rgba="0.04 0.52 0.46 1"/></material>
+  <material name="silver"><color rgba="0.7 0.74 0.76 1"/></material>
+  <material name="tip"><color rgba="0.95 0.65 0.12 1"/></material>
+  <link name="base_link">
+    <visual>
+      <origin xyz="0 0 -0.03"/>
+      <geometry><cylinder radius="0.055" length="0.06"/></geometry>
+      <material name="silver"/>
+    </visual>
+  </link>
+  <link name="upper_arm_link">
+    <visual>
+      <origin xyz="${float(length1) / 2.0} 0 0"/>
+      <geometry><box size="${length1} 0.035 0.035"/></geometry>
+      <material name="teal"/>
+    </visual>
+  </link>
+  <joint name="shoulder_joint" type="revolute">
+    <parent link="base_link"/>
+    <child link="upper_arm_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="$(arg shoulder_min)" upper="$(arg shoulder_max)"
+      effort="1.0" velocity="$(arg shoulder_max_speed)"/>
+  </joint>
+  <link name="forearm_link">
+    <visual>
+      <origin xyz="${float(length2) / 2.0} 0 0"/>
+      <geometry><box size="${length2} 0.028 0.028"/></geometry>
+      <material name="silver"/>
+    </visual>
+  </link>
+  <joint name="elbow_joint" type="revolute">
+    <parent link="upper_arm_link"/>
+    <child link="forearm_link"/>
+    <origin xyz="${length1} 0 0" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="$(arg elbow_min)" upper="$(arg elbow_max)"
+      effort="1.0" velocity="$(arg elbow_max_speed)"/>
+  </joint>
+  <link name="tool_link">
+    <visual>
+      <geometry><sphere radius="0.018"/></geometry>
+      <material name="tip"/>
+    </visual>
+  </link>
+  <joint name="tool_fixed_joint" type="fixed">
+    <parent link="forearm_link"/>
+    <child link="tool_link"/>
+    <origin xyz="${length2} 0 0" rpy="0 0 0"/>
+  </joint>
+</robot>
