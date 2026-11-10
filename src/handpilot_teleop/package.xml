@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>handpilot_teleop</name>
+  <version>0.1.0</version>
+  <description>Keyboard velocity pulses with asynchronous engagement services.</description>
+  <maintainer email="maintainer@example.com">HandPilot contributors</maintainer>
+  <license>TODO</license>
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>rcl_interfaces</exec_depend>
+  <exec_depend>handpilot_interfaces</exec_depend>
+  <exec_depend>std_srvs</exec_depend>
+  <exec_depend>python3-setuptools</exec_depend>
+  <test_depend>python3-pytest</test_depend>
+  <export><build_type>ament_python</build_type></export>
+</package>
