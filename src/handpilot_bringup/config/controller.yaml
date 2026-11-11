@@ -1,0 +1,16 @@
+/**:
+  ros__parameters:
+    link1_length: 0.30
+    link2_length: 0.25
+    shoulder_min: -2.8
+    shoulder_max: 2.8
+    elbow_min: -2.8
+    elbow_max: 2.8
+    shoulder_max_speed: 0.8
+    elbow_max_speed: 0.8
+    initial_shoulder: 0.4
+    initial_elbow: 1.0
+    max_cartesian_speed: 0.12
+    command_timeout: 0.25
+    max_dt: 0.10
+    control_rate_hz: 50.0
