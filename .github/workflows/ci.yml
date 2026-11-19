@@ -1,0 +1,58 @@
+name: Source and ROS tests
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  jazzy:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      ROS_DISTRO: jazzy
+      ROS_AUTOMATIC_DISCOVERY_RANGE: LOCALHOST
+      CMAKE_BUILD_PARALLEL_LEVEL: "2"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Inspect authored source
+        run: python3 scripts/inspect_source.py
+      - name: Set up ROS development tools and repositories
+        uses: ros-tooling/setup-ros@v0.7
+      - name: Install binary ROS base and package dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y ros-jazzy-ros-base ros-dev-tools
+          if [ ! -f /etc/ros/rosdep/sources.list.d/20-default.list ]; then
+            sudo rosdep init
+          fi
+          rosdep update --rosdistro jazzy
+          source /opt/ros/jazzy/setup.bash
+          rosdep install --from-paths src --ignore-src --rosdistro jazzy -y
+      - name: Build repository packages
+        shell: bash
+        run: |
+          source /opt/ros/jazzy/setup.bash
+          colcon build --symlink-install --executor sequential
+      - name: Test
+        shell: bash
+        run: |
+          source /opt/ros/jazzy/setup.bash
+          source install/setup.bash
+          colcon test --executor sequential --return-code-on-test-failure
+      - name: Report test results
+        if: always()
+        shell: bash
+        run: |
+          if [ -f /opt/ros/jazzy/setup.bash ]; then
+            source /opt/ros/jazzy/setup.bash
+            colcon test-result --verbose
+          else
+            echo "ROS setup was not reached; no test results exist."
+          fi
