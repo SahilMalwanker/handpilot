@@ -1,6 +1,7 @@
 # Record And Replay
 
-Ubuntu commands after successful build; NOT RUN. rosbag2 is an optional operation
+Ubuntu commands after successful build. All three procedures below were run on
+the ARM64 target; results are in VALIDATION_STATUS. rosbag2 is an optional operation
 tool, not a core dependency. If absent, check/install the Jazzy binary package
 `ros-jazzy-rosbag2` on the target. Recordings are ignored and can consume VM disk.
 
@@ -22,11 +23,9 @@ Stop the recorder with Ctrl-C so metadata is finalized. Inspect without playback
 ros2 bag info recordings/session01
 ```
 
-Confirm the actual topics and message counts. These are not provided or invented
-in this repo. Verify transient-local /tf_static and /robot_description capture
-and playback on Jazzy; QoS adaptation may need explicit configuration after
-observing real bag metadata. A static transform is not guaranteed to be present
-merely because /tf_static was named. No untested QoS override file is claimed.
+Confirm the actual topics and message counts. On Jazzy, transient-local
+/tf_static and /robot_description were captured (one message each) and were
+received by a late-joining subscriber during playback without a QoS override file.
 
 ## View Recorded Output
 

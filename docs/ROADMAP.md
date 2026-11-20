@@ -6,8 +6,9 @@ All requested package, test, launch, configuration, instruction, and documentati
 files have source content. FK/IK/Jacobian, constraints, explicit control states,
 session-aware freshness, keyboard pulses, simulated JointState/status, Xacro,
 robot_state_publisher launch, and optional bridge launch are authored.
-The workspace builds and all automated tests pass on the ARM64 target. Interactive
-keyboard use, TF comparison and Foxglove remain NOT RUN; see VALIDATION_STATUS.
+The workspace builds and all 51 automated tests pass on the ARM64 target,
+including TF/FK agreement and a real-terminal keyboard test. Record/replay and the
+Foxglove bridge were exercised. v0.1 is complete apart from choosing a license.
 
 ## Immediate Remaining Work
 
@@ -25,8 +26,8 @@ keyboard use, TF comparison and Foxglove remain NOT RUN; see VALIDATION_STATUS.
 
 ## After Baseline Validation
 
-- Add focused automated tests for pseudo-terminal cleanup and async stop ordering,
-  model/FK comparison via TF, clock jumps, and configurable joint-limit edge cases.
+- Done: pseudo-terminal cleanup, stop ordering on `q`/Ctrl-C, model/FK via TF.
+  Still open: clock-jump tests and configurable joint-limit edge cases.
 - Add a deterministic core event/replay harness with explicit virtual time and
   state-service events. Ordinary bag playback is not that harness.
 - Compare position IK tracking with a Jacobian-based controller using declared

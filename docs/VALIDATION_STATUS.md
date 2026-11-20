@@ -13,7 +13,7 @@ Rows still marked NOT RUN have no evidence yet. No measured performance exists.
 | OS | Ubuntu 24.04.5 LTS |
 | ROS | Jazzy, `rmw_fastrtps_cpp` (default RMW) |
 | Compiler / Python | GCC 13.3.0 / Python 3.12.3 |
-| Source revision | `af62153` plus the documentation and media changes in this update |
+| Source revision | `d47f804` plus the test and CI changes in this update |
 
 ## Results
 
@@ -31,16 +31,16 @@ Test commands: `colcon test --executor sequential` then `colcon test-result --ve
 | launch_testing integration and clean shutdown | PASSED | PASSED | `test_controller_integration.py`: 2 tests (vertical slice, clean exit) |
 | Real controller session (engage, motion, reach limit, watchdog) | PASSED | PASSED | `docs/media/demo_session.csv`, see below |
 | Source hygiene inspector | n/a | PASSED, 0 errors | `python3 scripts/inspect_source.py`; warnings only for the license TODO |
-| Interactive keyboard terminal (cbreak, autorepeat, Ctrl-C) | PASSED | NOT RUN | needs a human at an interactive SSH terminal |
-| Xacro expansion and robot_state_publisher TF | PASSED | NOT RUN | launch file built; TF not yet compared with FK |
-| Optional Foxglove launch | n/a | NOT RUN | package/ARM64/client compatibility unverified |
-| Recording/replay procedure | n/a | NOT RUN | instructions only, no bags recorded |
-| GitHub Actions CI | n/a | NOT RUN here | workflow source only; check the Actions tab for real runs |
+| Keyboard node in a real terminal (cbreak, keys, `q`, Ctrl-C, restore) | PASSED | PASSED | `test_keyboard_terminal.py`: real keyboard_node on a pseudo-terminal, 3 tests, stable over 3 repeated runs |
+| Xacro, launch-shared link lengths, TF vs FK agreement | PASSED | PASSED | `test_model_agreement.py`: full launch with 0.35/0.20 m links; TF `tool_link` = FK = controller within 1e-6 m, at startup and after motion. Fails (46 mm error) if the launch stops passing a length to Xacro |
+| Optional Foxglove bridge launch | n/a | PASSED (server) | `visualization.launch.py` listens on 127.0.0.1:8765 on ARM64; a desktop client connection is NOT RUN |
+| Recording/replay procedure | n/a | PASSED | RECORD_AND_REPLAY steps run, see below |
+| GitHub Actions CI (x86_64) | see Actions | see Actions | first run failed: `set -u` broke sourcing ROS; fixed in the workflow |
 | Webcam/rosbridge adapter | NO, planned | NOT RUN | CAMERA_INTEGRATION_PLAN only |
 | Performance/latency/memory measurements | NO | NOT RUN | no benchmark claims |
 
-Total: 46 test cases, 0 failures. `colcon test-result` reports 50 because it also
-counts four CTest wrapper entries.
+Total: 51 test cases, 0 failures. `colcon test-result` reports 57 because it also
+counts six CTest wrapper entries.
 
 ## Recorded Controller Session
 
@@ -63,6 +63,19 @@ not latency guarantees. The outward push curves rather than moving straight,
 because joint rate limiting near full extension does not preserve straight
 Cartesian lines, as CONTROL_SPEC already states.
 
+## Record And Replay Check
+
+On ROS_DOMAIN_ID 77 with localhost discovery: a 5.8 s session recorded 291
+`controller/status`, 291 `joint_states`, 184 `teleop/command`, 97 `/tf`, and one
+each of `/tf_static` and `/robot_description`. Playing back the output topics, a
+subscriber that joined late with transient-local QoS still received
+`/robot_description` and the static `tool_link` transform. Playing back only
+`/teleop/command` into a fresh controller left it DISENGAGED with joints exactly
+[0.4, 1.0]: recorded input cannot engage the robot.
+
+The recorder must exit cleanly (Ctrl-C in a terminal, or SIGTERM) to write its
+metadata. A SIGKILL leaves an empty `.mcap` and no `metadata.yaml`.
+
 ## Earlier Fixes Found By Running
 
 - Teleop: `main()` called `node.handle(...)` while the method was named
@@ -72,11 +85,10 @@ Cartesian lines, as CONTROL_SPEC already states.
 
 ## Next Validation Priorities
 
-1. Interactive keyboard: autorepeat delay against the 0.35 s pulse, Ctrl-C stop path,
-   terminal restoration.
-2. Model/state agreement: compare `tool_link` TF from robot_state_publisher with core
-   FK for the same joints, including after changing the link lengths.
-3. CI on GitHub-hosted Ubuntu 24.04 (x86_64) to complement the ARM64 results.
+1. CI on GitHub-hosted Ubuntu 24.04 (x86_64) to complement the ARM64 results.
+2. Human feel: your own terminal's autorepeat delay against the 0.35 s pulse
+   (the automated test sends keys every 0.1 s).
+3. Foxglove desktop client connected over the SSH tunnel.
 
 ## Recording Future Evidence
 

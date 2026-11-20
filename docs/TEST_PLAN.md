@@ -1,6 +1,6 @@
 # Test Plan
 
-All automated tests below pass on the Ubuntu 24.04 ARM64 target (46 cases;
+All automated tests below pass on the Ubuntu 24.04 ARM64 target (51 cases;
 see [VALIDATION_STATUS](VALIDATION_STATUS.md)). No camera, display, physical robot, downloads,
 or external network service is required. ROS tests need local DDS/process IPC.
 Real package metadata and a successful build are prerequisites.
@@ -13,6 +13,8 @@ Real package metadata and a successful build are prerequisites.
 | src/handpilot_core/test/test_constraints.cpp | Cartesian magnitude including huge finite input, joint rate/position bounds, invalid dt, invalid desired joints, invalid config |
 | src/handpilot_core/test/test_controller.cpp | No motion while stopped, no jump at engage/re-engage, fresh target, stale/inactive HOLD, no recovery auto-engage, timeout not hidden by new arrival, session changes, duplicate sequences, invalid dt/time/velocity, reset gates, rate-limited and unreachable anti-windup |
 | src/handpilot_teleop/test/test_keyboard_mapping.py | Direction/action mapping, finite speed, pulse expiry/repeat, stop clearing, active-zero engage window, invalid time |
+| src/handpilot_bringup/test/test_model_agreement.py | Full launch with non-default link lengths; TF base_link->tool_link equals FK of published joints and the controller's achieved position within 1e-6 m, at startup and after engaged motion; clean shutdown of all launched processes |
+| src/handpilot_bringup/test/test_keyboard_terminal.py | Real keyboard_node on a pseudo-terminal: engage with `e`, repeated `w` moves the arm, released key expires to HOLD "inactive input", `q` and Ctrl-C both land "explicit disengage", terminal returns to canonical echo mode |
 | src/handpilot_control/test/test_controller_integration.py | Startup DISENGAGED, fresh input plus explicit engage, observable motion, finite named joints/speed bounds, inactive and stale HOLD, recovery alone stays stopped, rejected frame faults without process exit, explicit reset, clean launch shutdown |
 
 Core tests supply time directly and need no sleeping or ROS. They use finite

@@ -10,7 +10,7 @@ into motion that is limited, explainable, and stops when the input goes quiet.
 ![C++17](https://img.shields.io/badge/C%2B%2B-17-00599C?logo=cplusplus&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)
 ![Ubuntu 24.04 ARM64](https://img.shields.io/badge/Ubuntu%2024.04-ARM64-E95420?logo=ubuntu&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-46%20passing%20(local%20ARM64)-2ea043)
+![Tests](https://img.shields.io/badge/tests-51%20passing%20(local%20ARM64)-2ea043)
 
 <img src="docs/media/handpilot_demo.gif" alt="Animation of the simulated arm: commands arrive while disengaged and nothing moves, then after explicit engagement the tool traces a circle, is pushed to its reach limit where inverse kinematics rejects further steps, and finally goes to HOLD when commands stop." width="820">
 
@@ -204,8 +204,10 @@ colcon test --executor sequential && colcon test-result --verbose
 | `test_controller` (gtest) | 13 | No motion while stopped, no jump on engage, stale and inactive HOLD, sequence and session rules, NaN faults, reset |
 | `test_keyboard_mapping` (pytest) | 21 | Key mapping, pulse expiry, stop clearing |
 | `test_controller_integration` (launch_testing) | 2 | Real node: engage, move, HOLD on silence, FAULT on bad frame, reset, clean shutdown |
+| `test_model_agreement` (launch_testing) | 2 | Full launch with changed link lengths: TF `tool_link` = FK = controller within 1 µm |
+| `test_keyboard_terminal` (launch_testing) | 3 | Real `keyboard_node` on a pseudo-terminal: keys move the arm, `q` and Ctrl-C stop it, terminal restored |
 
-All 46 pass on Ubuntu 24.04.5 aarch64 / Jazzy / GCC 13.3 with zero compiler warnings.
+All 51 pass on Ubuntu 24.04.5 aarch64 / Jazzy / GCC 13.3 with zero compiler warnings.
 Full evidence, including what is **not** yet verified, is in
 [docs/VALIDATION_STATUS.md](docs/VALIDATION_STATUS.md).
 
@@ -237,7 +239,7 @@ Deeper docs: [learning guide](docs/LEARNING_GUIDE.md) ·
 - **Not hard real-time.** A ROS timer on a Linux VM isn't a deterministic PLC scan; timing is unmeasured.
 - **Paths can curve.** Joint rate limiting doesn't preserve straight Cartesian lines (visible in the GIF near full reach).
 - **One input source.** A second publisher interrupts operation; there's no arbitration.
-- **Not yet verified:** interactive keyboard feel, TF vs FK comparison, Foxglove on ARM64, CI on GitHub.
+- **Not yet verified:** your own terminal's key-repeat feel, a Foxglove desktop client, GitHub CI on x86_64.
 
 ## Roadmap
 

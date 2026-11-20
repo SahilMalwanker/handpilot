@@ -26,7 +26,8 @@ jobs:
       - name: Install binary ROS base and package dependencies
         shell: bash
         run: |
-          set -euo pipefail
+          # No -u: ROS setup scripts read unset variables such as AMENT_TRACE_SETUP_FILES.
+          set -eo pipefail
           sudo apt-get update
           sudo apt-get install -y ros-jazzy-ros-base ros-dev-tools
           if [ ! -f /etc/ros/rosdep/sources.list.d/20-default.list ]; then
@@ -50,9 +51,9 @@ jobs:
         if: always()
         shell: bash
         run: |
-          if [ -f /opt/ros/jazzy/setup.bash ]; then
+          if [ -f /opt/ros/jazzy/setup.bash ] && [ -d build ]; then
             source /opt/ros/jazzy/setup.bash
             colcon test-result --verbose
           else
-            echo "ROS setup was not reached; no test results exist."
+            echo "Build was not reached; no test results exist."
           fi
