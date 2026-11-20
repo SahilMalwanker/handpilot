@@ -7,8 +7,9 @@ package, and now needs to explain an entire system rather than accumulate snippe
 
 v0.1 source includes two-link XY FK/IK/Jacobian, bounded velocity integration,
 latched stop/fault states, ROS status/services, terminal input, a primitive model,
-launch files, and test source. No executions have been performed for this repo.
-Authored does not mean compiled, tested, measured, or physically validated.
+launch files, and tests. It builds and its 46 automated tests pass on the Ubuntu
+24.04 ARM64 target; see [VALIDATION_STATUS](VALIDATION_STATUS.md). Nothing is
+measured for performance or physically validated.
 
 Non-goals: dynamics, collision checking, physical actuators, certification, camera
 inference, a decorative frontend, plugin frameworks, Node.js runtime, external

@@ -1,79 +1,86 @@
 # Validation Status
 
-Initial source authored on 2026-10-19. Authoring and read-only static inspection
-only; no shell, compiler, interpreter, linter, test runner, ROS process, installer,
-container, VM, CI, Git initialization, or publication was executed for this task.
-Editor diagnostics are not compile/test evidence. No measured performance exists.
+Source was authored on 2026-10-19 on a separate workstation with no toolchain.
+Everything marked PASSED below was executed afterwards on the target VM.
+Rows still marked NOT RUN have no evidence yet. No measured performance exists.
 
-The final editor diagnostic snapshot could not locate local C++ standard-library
-headers (array, optional, cmath, limits, stdexcept) or gtest. No toolchain was
-installed/configured to remove those authoring-environment errors. C++ syntax
-checking is incomplete; earlier empty diagnostic snapshots were not successful builds.
+## Execution Environment
 
-| Requirement | Source authored | Build checked | Runtime checked | Evidence |
-| --- | --- | --- | --- | --- |
-| Control and interface contracts | YES | NOT RUN | NOT RUN | CONTROL_SPEC and ROS_INTERFACES |
-| rosidl C++/Python messages/services | YES | NOT RUN | NOT RUN | interfaces package source only |
-| Pure C++ FK/IK/Jacobian | YES | NOT RUN | NOT RUN | core source and numerical tests only |
-| Workspace/joint/speed limits | YES | NOT RUN | NOT RUN | constraints/controller tests only |
-| HOLD, engagement, session and fault reset | YES | NOT RUN | NOT RUN | state machine and test source only |
-| Steady-time watchdog and dt bounds | YES | NOT RUN | NOT RUN | explicit time inputs and adapter source only |
-| Simulated JointState/status services | YES | NOT RUN | NOT RUN | controller adapter source only |
-| Keyboard pulse expiry and cleanup | YES | NOT RUN | NOT RUN | teleop source and pure mapping tests only |
-| Xacro geometry and robot_state_publisher | YES | NOT RUN | NOT RUN | model/shared launch source only |
-| Unit test execution | YES | NOT RUN | NOT RUN | no test results supplied |
-| launch_testing integration/shutdown | YES | NOT RUN | NOT RUN | real test source, no process logs |
-| Source hygiene inspector | YES | NOT RUN | NOT RUN | standard-library script, never executed |
-| ROS package metadata | YES, incomplete contact | NOT RUN | NOT RUN | empty maintainer emails are known blockers |
-| Optional Foxglove launch | YES | NOT RUN | NOT RUN | package/ARM64/client compatibility unverified |
-| Recording/replay procedure | YES | NOT RUN | NOT RUN | instructions only, no bags recorded |
-| Ubuntu 24.04 ARM64 target | YES, setup guide | NOT RUN | NOT RUN | no results for this source tree |
-| Future Ubuntu 24.04 CI | YES | NOT RUN | NOT RUN | workflow source, documented action tags |
-| Webcam/rosbridge adapter | NO, planned | NOT RUN | NOT RUN | CAMERA_INTEGRATION_PLAN only |
-| Performance/latency/memory measurements | NO | NOT RUN | NOT RUN | no benchmark claims |
+| Item | Value |
+| --- | --- |
+| Machine | UTM VM on Apple M2, 2 vCPU, ~3 GB RAM |
+| Architecture | aarch64 |
+| OS | Ubuntu 24.04.5 LTS |
+| ROS | Jazzy, `rmw_fastrtps_cpp` (default RMW) |
+| Compiler / Python | GCC 13.3.0 / Python 3.12.3 |
+| Source revision | `af62153` plus the documentation and media changes in this update |
 
-## Known Blockers And Assumptions
+## Results
 
-Six manifests intentionally omit a real maintainer email because none was supplied.
-This prevents valid package discovery/build until completed by the user. License
-TODO remains an unresolved publication decision, not an assigned license.
-See [TRANSFER_AND_SETUP](TRANSFER_AND_SETUP.md) for the exact prerequisite.
+Build command: `CMAKE_BUILD_PARALLEL_LEVEL=2 colcon build --symlink-install --executor sequential`
+Test commands: `colcon test --executor sequential` then `colcon test-result --verbose`
 
-Official Jazzy documentation fetches returned an anti-bot page. Action README web
-content was readable; no GitHub APIs were used. See [DEPENDENCIES](DEPENDENCIES.md)
-for the versioned documentation references and unverified API assumptions.
+| Requirement | Build | Runtime / tests | Evidence |
+| --- | --- | --- | --- |
+| Package metadata and discovery (6 packages) | PASSED | n/a | colcon build, 0 compiler warnings with `-Wall -Wextra -Wpedantic` |
+| rosidl C++/Python messages and services | PASSED | PASSED | used by the controller (C++) and by teleop/tests (Python) |
+| Pure C++ FK/IK/Jacobian | PASSED | PASSED | `test_kinematics`: 6 gtests |
+| Cartesian, joint-position and joint-rate limits | PASSED | PASSED | `test_constraints`: 4 gtests |
+| HOLD, engagement, session, sequence and fault reset | PASSED | PASSED | `test_controller`: 13 gtests |
+| Keyboard mapping and pulse expiry (pure classes) | PASSED | PASSED | `test_keyboard_mapping.py`: 21 pytest cases |
+| launch_testing integration and clean shutdown | PASSED | PASSED | `test_controller_integration.py`: 2 tests (vertical slice, clean exit) |
+| Real controller session (engage, motion, reach limit, watchdog) | PASSED | PASSED | `docs/media/demo_session.csv`, see below |
+| Source hygiene inspector | n/a | PASSED, 0 errors | `python3 scripts/inspect_source.py`; warnings only for the license TODO |
+| Interactive keyboard terminal (cbreak, autorepeat, Ctrl-C) | PASSED | NOT RUN | needs a human at an interactive SSH terminal |
+| Xacro expansion and robot_state_publisher TF | PASSED | NOT RUN | launch file built; TF not yet compared with FK |
+| Optional Foxglove launch | n/a | NOT RUN | package/ARM64/client compatibility unverified |
+| Recording/replay procedure | n/a | NOT RUN | instructions only, no bags recorded |
+| GitHub Actions CI | n/a | NOT RUN here | workflow source only; check the Actions tab for real runs |
+| Webcam/rosbridge adapter | NO, planned | NOT RUN | CAMERA_INTEGRATION_PLAN only |
+| Performance/latency/memory measurements | NO | NOT RUN | no benchmark claims |
 
-Static review can compare names, fields, dependency declarations, ownership,
-stop paths, source installation rules, and geometry algebra. It cannot establish
-compiler compatibility, process behavior, reliable timing, terminal restoration,
-rendering, or passed tests. No source-inspector output has been generated.
+Total: 46 test cases, 0 failures. `colcon test-result` reports 50 because it also
+counts four CTest wrapper entries.
 
-Static review corrected a keyboard pulse boundary calculation and replaced buffered
-text reads with single-byte file-descriptor reads after select. Explicit pending
-stop requests suppress new motion/engage keys until their service response. A pulse
-boundary regression test was authored; that test and terminal behavior remain NOT RUN.
+## Recorded Controller Session
 
-Follow-up review changed teleop signal handling so Ctrl-C can send an explicit
-stop before ROS shutdown; SIGTERM still restores the terminal. NOT RUN.
+`scripts/readme_media/record_demo.py` starts a real `controller_node` in a private
+namespace, plays a fixed operator script, and records every `controller/status`
+message (591 samples). Observed transitions:
 
-Core review added exact active-zero freezing without an IK round trip, preserved
-rejection flags across reset until status publication, and authored explicit tests
-for those behaviors and uint64 sequence wrap rejection. All remain NOT RUN.
+| Time (s) | Operator action | Observed state and reason |
+| --- | --- | --- |
+| 0.00 | Active velocity commands, no engage | DISENGAGED; joints unchanged |
+| 1.21 | `set_engaged(true)` | ENGAGED, "explicit engagement; awaiting input"; no jump |
+| 1.51 | Circle, r = 0.07 m at 0.07 m/s | ENGAGED, "tracking velocity" |
+| 7.81 | Push radially outward at 0.12 m/s | "motion limited" (joint rate limit), then "outside radial workspace" (IK rejection) |
+| 8.85 to 10.39 | Keep pushing | Arm parks at radius 0.548 m of 0.55 m; rejected steps do not accumulate |
+| 10.39 | Stop publishing | ENGAGED until the age exceeds the timeout |
+| 10.63 | (silence) | HOLD, "command timeout", age 0.263 s |
 
-## First Validation Priorities
+These timings come from one run on a loaded VM. They show the order of events,
+not latency guarantees. The outward push curves rather than moving straight,
+because joint rate limiting near full extension does not preserve straight
+Cartesian lines, as CONTROL_SPEC already states.
 
-1. Packaging/API compatibility: metadata, ament exported target namespace, rosidl
-   bindings, rclcpp/rclpy APIs, launch_testing discovery and shutdown.
-2. Stop behavior in real scheduling: keyboard autorepeat/expiry, service ordering,
-   stale samples, VM timer gaps, source restart, cleanup, and explicit recovery.
-3. Model/state agreement: shared Xacro parameters, TF joint origins, FK/IK hard
-   limits, actual rate bounds, and boundary anti-windup on the ARM64 runtime.
+## Earlier Fixes Found By Running
+
+- Teleop: `main()` called `node.handle(...)` while the method was named
+  `handle_key`. Fixed before publication.
+- Integration test: the post-shutdown check waited for a process that launch_testing
+  had already stopped. It now asserts the exit code only.
+
+## Next Validation Priorities
+
+1. Interactive keyboard: autorepeat delay against the 0.35 s pulse, Ctrl-C stop path,
+   terminal restoration.
+2. Model/state agreement: compare `tool_link` TF from robot_state_publisher with core
+   FK for the same joints, including after changing the link lengths.
+3. CI on GitHub-hosted Ubuntu 24.04 (x86_64) to complement the ARM64 results.
 
 ## Recording Future Evidence
 
-For each actually performed check add the exact command, machine/architecture,
-Ubuntu/ROS/RMW versions, source revision or archive identity, date, complete result
-summary and a reviewed evidence location. Mark failed checks FAILED with their
-first error, never leave them looking like passes. Change only the checked rows.
-Keep optional or unmeasured requirements NOT RUN until evidence exists. A successful
-talker/listener in the older learning workspace does not validate HandPilot source.
+For each check add the exact command, machine/architecture, Ubuntu/ROS/RMW versions,
+source revision, date, result summary and evidence location. Mark failed checks
+FAILED with their first error. Keep unmeasured requirements NOT RUN until evidence
+exists.

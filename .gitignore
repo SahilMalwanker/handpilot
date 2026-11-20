@@ -28,3 +28,5 @@ Desktop.ini
 *.swo
 *.pem
 *.key
+*.bak
+*.before-*

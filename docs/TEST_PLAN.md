@@ -1,6 +1,7 @@
 # Test Plan
 
-All tests are authored and NOT RUN. No camera, display, physical robot, downloads,
+All automated tests below pass on the Ubuntu 24.04 ARM64 target (46 cases;
+see [VALIDATION_STATUS](VALIDATION_STATUS.md)). No camera, display, physical robot, downloads,
 or external network service is required. ROS tests need local DDS/process IPC.
 Real package metadata and a successful build are prerequisites.
 

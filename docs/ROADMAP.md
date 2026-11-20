@@ -6,7 +6,8 @@ All requested package, test, launch, configuration, instruction, and documentati
 files have source content. FK/IK/Jacobian, constraints, explicit control states,
 session-aware freshness, keyboard pulses, simulated JointState/status, Xacro,
 robot_state_publisher launch, and optional bridge launch are authored.
-This is not a claim of compiled or working runtime behavior. All execution NOT RUN.
+The workspace builds and all automated tests pass on the ARM64 target. Interactive
+keyboard use, TF comparison and Foxglove remain NOT RUN; see VALIDATION_STATUS.
 
 ## Immediate Remaining Work
 

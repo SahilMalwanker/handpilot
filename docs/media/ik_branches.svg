@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 340" width="640" height="340" font-family="DejaVu Sans, Segoe UI, Helvetica, Arial, sans-serif">
+  <rect width="640" height="340" rx="14" fill="#0d1117"/>
+  <circle cx="70" cy="300" r="231.0" fill="none" stroke="#30405a" stroke-width="2" stroke-dasharray="6 6"/>
+  <circle cx="70" cy="300" r="21.0" fill="#30405a" fill-opacity="0.5"/>
+  <line x1="70" y1="300" x2="195.6" y2="309.4" stroke="#14b8a6" stroke-opacity="0.18" stroke-width="10" stroke-linecap="round"/>
+  <line x1="195.6" y1="309.4" x2="221.2" y2="207.6" stroke="#afb8c1" stroke-opacity="0.18" stroke-width="8" stroke-linecap="round"/>
+  <line x1="70" y1="300" x2="118.9" y2="183.9" stroke="#14b8a6" stroke-opacity="0.18" stroke-width="10" stroke-linecap="round"/>
+  <line x1="118.9" y1="183.9" x2="221.2" y2="207.6" stroke="#afb8c1" stroke-opacity="0.18" stroke-width="8" stroke-linecap="round"/>
+  <line x1="70" y1="300" x2="118.9" y2="183.9" stroke="#14b8a6" stroke-width="10" stroke-linecap="round">
+    <animate attributeName="x2" values="118.9;118.9;195.6;195.6;118.9" keyTimes="0;0.35;0.5;0.85;1" dur="5s" repeatCount="indefinite"/>
+    <animate attributeName="y2" values="183.9;183.9;309.4;309.4;183.9" keyTimes="0;0.35;0.5;0.85;1" dur="5s" repeatCount="indefinite"/>
+  </line>
+  <line x1="118.9" y1="183.9" x2="221.2" y2="207.6" stroke="#afb8c1" stroke-width="8" stroke-linecap="round">
+    <animate attributeName="x1" values="118.9;118.9;195.6;195.6;118.9" keyTimes="0;0.35;0.5;0.85;1" dur="5s" repeatCount="indefinite"/>
+    <animate attributeName="y1" values="183.9;183.9;309.4;309.4;183.9" keyTimes="0;0.35;0.5;0.85;1" dur="5s" repeatCount="indefinite"/>
+  </line>
+  <circle cx="70" cy="300" r="10" fill="#afb8c1"/>
+  <circle cx="221.2" cy="207.6" r="9" fill="#f5a623"/>
+  <circle cx="221.2" cy="207.6" r="16" fill="none" stroke="#f5a623" stroke-width="2">
+    <animate attributeName="r" values="10;20;10" dur="1.6s" repeatCount="indefinite"/>
+    <animate attributeName="stroke-opacity" values="1;0;1" dur="1.6s" repeatCount="indefinite"/>
+  </circle>
+  <text x="237.2" y="212.6" fill="#e6edf3" font-size="13">target (0.36, 0.22) m</text>
+  <text x="40" y="326" fill="#8b949e" font-size="12">base_link</text>
+  <text x="372" y="40" fill="#e6edf3" font-size="17" font-weight="bold">One point, two arm poses</text>
+  <text x="372" y="66" fill="#8b949e" font-size="13">q2 = +/- acos(c),</text>
+  <text x="372" y="84" fill="#8b949e" font-size="13">c = (r^2 - L1^2 - L2^2) / (2 L1 L2)</text>
+  <text x="372" y="118" fill="#14b8a6" font-size="13">elbow-down  q2 = +1.40 rad</text>
+  <text x="372" y="138" fill="#14b8a6" font-size="13">elbow-up    q2 = -1.40 rad</text>
+  <text x="372" y="172" fill="#8b949e" font-size="12">HandPilot keeps the branch nearest the</text>
+  <text x="372" y="189" fill="#8b949e" font-size="12">current joints, inside hard limits.</text>
+  <text x="372" y="223" fill="#8b949e" font-size="12">Dashed ring: |r| &gt; L1 + L2 is unreachable.</text>
+  <text x="372" y="240" fill="#8b949e" font-size="12">Filled disc: |r| &lt; |L1 - L2| is unreachable.</text>
+  <text x="372" y="274" fill="#6e7681" font-size="11">Geometry computed from L1 = 0.30 m, L2 = 0.25 m</text>
+</svg>
