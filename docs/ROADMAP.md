@@ -8,12 +8,12 @@ session-aware freshness, keyboard pulses, simulated JointState/status, Xacro,
 robot_state_publisher launch, and optional bridge launch are authored.
 The workspace builds and all 51 automated tests pass on the ARM64 target,
 including TF/FK agreement and a real-terminal keyboard test. Record/replay and the
-Foxglove bridge were exercised. v0.1 is complete apart from choosing a license.
+Foxglove bridge were exercised. With the Apache-2.0 license chosen, v0.1 is complete.
 
 ## Immediate Remaining Work
 
-1. Supply real maintainer emails in six manifests. Choose a license before publication
-   and replace TODO consistently; no license selection was made during authoring.
+1. Done: Apache-2.0 license. Open: the manifests still carry a placeholder
+   maintainer email (maintainer@example.com).
 2. Transfer source to ~/handpilot without overwriting edited work or changing ~/handpilot_ws.
 3. Run source inspection, rosdep, sequential build, unit tests, launch integration,
    and test-result on Ubuntu 24.04 ARM64. Resolve actual first failures using logs.

@@ -1,6 +1,6 @@
 # Source Inspection
 
-Runs with 0 errors on the target (license TODO warnings remain). From ~/handpilot:
+Runs with 0 errors and 0 warnings on the target. From ~/handpilot:
 
 ```bash
 python3 scripts/inspect_source.py

@@ -4,7 +4,7 @@
   <version>0.1.0</version>
   <description>ROS adapter for the authoritative simulated joint controller.</description>
   <maintainer email="maintainer@example.com">HandPilot contributors</maintainer>
-  <license>TODO</license>
+  <license>Apache-2.0</license>
   <buildtool_depend>ament_cmake</buildtool_depend>
   <depend>rclcpp</depend>
   <depend>rcl_interfaces</depend>

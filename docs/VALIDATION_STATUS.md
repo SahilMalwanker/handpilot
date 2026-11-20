@@ -30,12 +30,12 @@ Test commands: `colcon test --executor sequential` then `colcon test-result --ve
 | Keyboard mapping and pulse expiry (pure classes) | PASSED | PASSED | `test_keyboard_mapping.py`: 21 pytest cases |
 | launch_testing integration and clean shutdown | PASSED | PASSED | `test_controller_integration.py`: 2 tests (vertical slice, clean exit) |
 | Real controller session (engage, motion, reach limit, watchdog) | PASSED | PASSED | `docs/media/demo_session.csv`, see below |
-| Source hygiene inspector | n/a | PASSED, 0 errors | `python3 scripts/inspect_source.py`; warnings only for the license TODO |
+| Source hygiene inspector | n/a | PASSED, 0 errors | `python3 scripts/inspect_source.py`; 0 warnings after the Apache-2.0 license was set |
 | Keyboard node in a real terminal (cbreak, keys, `q`, Ctrl-C, restore) | PASSED | PASSED | `test_keyboard_terminal.py`: real keyboard_node on a pseudo-terminal, 3 tests, stable over 3 repeated runs |
 | Xacro, launch-shared link lengths, TF vs FK agreement | PASSED | PASSED | `test_model_agreement.py`: full launch with 0.35/0.20 m links; TF `tool_link` = FK = controller within 1e-6 m, at startup and after motion. Fails (46 mm error) if the launch stops passing a length to Xacro |
 | Optional Foxglove bridge launch | n/a | PASSED (server) | `visualization.launch.py` listens on 127.0.0.1:8765 on ARM64; a desktop client connection is NOT RUN |
 | Recording/replay procedure | n/a | PASSED | RECORD_AND_REPLAY steps run, see below |
-| GitHub Actions CI (x86_64) | see Actions | see Actions | first run failed: `set -u` broke sourcing ROS; fixed in the workflow |
+| GitHub Actions CI (x86_64) | PASSED | PASSED | run 44647686217 on `f42082a`, ubuntu-24.04 runner: all 57 test results (51 cases) pass. The first run failed because `set -u` broke sourcing ROS; fixed in the workflow |
 | Webcam/rosbridge adapter | NO, planned | NOT RUN | CAMERA_INTEGRATION_PLAN only |
 | Performance/latency/memory measurements | NO | NOT RUN | no benchmark claims |
 
@@ -85,10 +85,9 @@ metadata. A SIGKILL leaves an empty `.mcap` and no `metadata.yaml`.
 
 ## Next Validation Priorities
 
-1. CI on GitHub-hosted Ubuntu 24.04 (x86_64) to complement the ARM64 results.
-2. Human feel: your own terminal's autorepeat delay against the 0.35 s pulse
+1. Human feel: your own terminal's autorepeat delay against the 0.35 s pulse
    (the automated test sends keys every 0.1 s).
-3. Foxglove desktop client connected over the SSH tunnel.
+2. Foxglove desktop client connected over the SSH tunnel.
 
 ## Recording Future Evidence
 

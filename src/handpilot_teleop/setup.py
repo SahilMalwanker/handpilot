@@ -14,7 +14,7 @@ setup(
     zip_safe=True,
     maintainer="HandPilot contributors",
     description="Interactive terminal velocity requests for HandPilot.",
-    license="TODO",
+    license="Apache-2.0",
     tests_require=["pytest"],
     entry_points={"console_scripts": [
         "keyboard_node = handpilot_teleop.keyboard_node:main",

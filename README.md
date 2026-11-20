@@ -6,11 +6,13 @@
 A ROS 2 Jazzy + C++17 two-link arm that turns an imperfect stream of human commands
 into motion that is limited, explainable, and stops when the input goes quiet.
 
+[![CI](https://github.com/SahilMalwanker/handpilot/actions/workflows/ci.yml/badge.svg)](https://github.com/SahilMalwanker/handpilot/actions/workflows/ci.yml)
 ![ROS 2 Jazzy](https://img.shields.io/badge/ROS%202-Jazzy-22314E?logo=ros&logoColor=white)
 ![C++17](https://img.shields.io/badge/C%2B%2B-17-00599C?logo=cplusplus&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)
 ![Ubuntu 24.04 ARM64](https://img.shields.io/badge/Ubuntu%2024.04-ARM64-E95420?logo=ubuntu&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-51%20passing%20(local%20ARM64)-2ea043)
+![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue)
+![Tests](https://img.shields.io/badge/tests-51%20passing%20(ARM64%20%2B%20x86__64)-2ea043)
 
 <img src="docs/media/handpilot_demo.gif" alt="Animation of the simulated arm: commands arrive while disengaged and nothing moves, then after explicit engagement the tool traces a circle, is pushed to its reach limit where inverse kinematics rejects further steps, and finally goes to HOLD when commands stop." width="820">
 
@@ -207,7 +209,8 @@ colcon test --executor sequential && colcon test-result --verbose
 | `test_model_agreement` (launch_testing) | 2 | Full launch with changed link lengths: TF `tool_link` = FK = controller within 1 µm |
 | `test_keyboard_terminal` (launch_testing) | 3 | Real `keyboard_node` on a pseudo-terminal: keys move the arm, `q` and Ctrl-C stop it, terminal restored |
 
-All 51 pass on Ubuntu 24.04.5 aarch64 / Jazzy / GCC 13.3 with zero compiler warnings.
+All 51 pass on Ubuntu 24.04.5 aarch64 / Jazzy / GCC 13.3 with zero compiler warnings,
+and in GitHub Actions on x86_64.
 Full evidence, including what is **not** yet verified, is in
 [docs/VALIDATION_STATUS.md](docs/VALIDATION_STATUS.md).
 
@@ -239,7 +242,7 @@ Deeper docs: [learning guide](docs/LEARNING_GUIDE.md) ·
 - **Not hard real-time.** A ROS timer on a Linux VM isn't a deterministic PLC scan; timing is unmeasured.
 - **Paths can curve.** Joint rate limiting doesn't preserve straight Cartesian lines (visible in the GIF near full reach).
 - **One input source.** A second publisher interrupts operation; there's no arbitration.
-- **Not yet verified:** your own terminal's key-repeat feel, a Foxglove desktop client, GitHub CI on x86_64.
+- **Not yet verified:** your own terminal's key-repeat feel and a Foxglove desktop client.
 
 ## Roadmap
 
@@ -249,5 +252,4 @@ replay analysis, and controller comparisons. See [docs/ROADMAP.md](docs/ROADMAP.
 
 ## License
 
-No license has been chosen yet, so default copyright applies and the code is not
-licensed for reuse. Choosing one is an open task.
+[Apache-2.0](LICENSE). The same license ROS 2 itself uses for most of its core packages.

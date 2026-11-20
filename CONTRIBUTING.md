@@ -1,8 +1,8 @@
 # Contributing
 
-This source is an unexecuted learning implementation, not a validated robot
-controller. No license has been chosen; resolve licensing and real maintainer
-metadata before inviting public use or making licensing claims.
+This is a learning implementation of a simulated controller, not a validated robot
+controller. It is licensed under Apache-2.0 (see LICENSE); contributions are accepted
+under the same license.
 
 Read [CONTROL_SPEC](docs/CONTROL_SPEC.md) and [ROS_INTERFACES](docs/ROS_INTERFACES.md)
 first. Work on one behavior at a time, add a focused test before changing it,

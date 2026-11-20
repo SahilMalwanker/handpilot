@@ -12,9 +12,8 @@ you authorize for these sources. Do not invent an email or borrow an unrelated
 identity. The descriptive maintainer text may be updated to match that contact.
 No author emails have been fabricated in Python setup metadata.
 
-`<license>TODO</license>` and setup.py's matching field are unresolved, not a legal
-grant. Choose an appropriate license and add its text before publication; do not
-claim a license has already been selected. The source inspector warns about this.
+The project is licensed under Apache-2.0. LICENSE holds the text, and every
+package.xml plus setup.py declares it.
 
 ## Windows To Mac To Ubuntu
 

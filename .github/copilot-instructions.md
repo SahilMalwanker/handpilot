@@ -29,5 +29,5 @@ colcon test-result --verbose. Never sudo colcon or build ROS from source.
 HOLD freezes simulated positions and clears pending input. Fresh messages never
 automatically engage after a stop, session change, or fault. Fault reset is a
 separate service. A watchdog is not a physical emergency stop. Update tests and
-honest validation status with every behavioral change; do not choose a license
-or invent a maintainer email. See docs/TRANSFER_AND_SETUP.md for metadata blockers.
+honest validation status with every behavioral change. The project license is
+Apache-2.0; keep package metadata consistent with it. Do not invent a maintainer email. See docs/TRANSFER_AND_SETUP.md for metadata blockers.

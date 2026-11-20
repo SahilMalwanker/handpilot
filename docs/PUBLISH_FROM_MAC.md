@@ -19,8 +19,8 @@ If tests led to changes only in the VM, publish those changes, not the older ZIP
 
 ## Publication Gates
 
-- Choose a license intentionally and add its text; update package.xml/setup.py
-  consistently. No LICENSE or license grant has been selected for you.
+- License: Apache-2.0, chosen by the maintainer. LICENSE holds the full text;
+  package.xml and setup.py declare it consistently.
 - Provide genuine maintainer metadata and review any public contact exposure.
 - Ensure no personal recordings, author-path leaks, secrets, binaries, or generated
   dependencies are staged. Ignore rules alone are not a privacy/security guarantee.

@@ -24,7 +24,7 @@ meshes, Gazebo, Isaac Sim, MoveIt, Linux desktop, cloud, or databases.
 - Achieved-position anti-windup instead of indefinitely integrating an unreachable target.
 - Keyboard `e` emits a short active-zero pulse before the async engage request.
 - Status events are latched until the next status publish; joints are simulated.
-- No LICENSE is selected. `<license>TODO</license>` is pending metadata, not a grant.
+- Licensed under Apache-2.0 (LICENSE at the repository root).
 - ROS format-3 manifests require a maintainer email, but none was supplied and
   fabrication is prohibited. Empty emails deliberately leave a pre-build blocker.
   The user must supply a real contact in all six manifests. No legal identity is invented.

@@ -4,7 +4,7 @@
   <version>0.1.0</version>
   <description>Keyboard velocity pulses with asynchronous engagement services.</description>
   <maintainer email="maintainer@example.com">HandPilot contributors</maintainer>
-  <license>TODO</license>
+  <license>Apache-2.0</license>
   <exec_depend>rclpy</exec_depend>
   <exec_depend>rcl_interfaces</exec_depend>
   <exec_depend>handpilot_interfaces</exec_depend>
